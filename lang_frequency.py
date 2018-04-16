@@ -1,6 +1,6 @@
 import argparse
 import re
-
+from collections import Counter
 
 def get_console_arguments():
     parser = argparse.ArgumentParser()
@@ -18,30 +18,16 @@ def load_data(file_path):
     return file_content
 
 
-def get_all_words_frequency(text):
+def get_most_frequent_words(text, print_length):
     lower_text = text.lower()
     words_list = re.findall(r'\b\w+\b', lower_text)
-    all_words_frequency = {}
-    for word in words_list:
-        if word in all_words_frequency.keys():
-            all_words_frequency[word] += 1
-            continue
-        all_words_frequency[word] = 1
-    return all_words_frequency
+    frequent_words_with_amount = Counter(words_list).most_common(print_length)
+    return frequent_words_with_amount
 
 
-def get_words_sorted_by_frequency(words_dict):
-    frequent_words_list = list(words_dict.keys())
-    frequent_words_list.sort(
-        key=lambda x: words_dict[x],
-        reverse=True
-    )
-    return frequent_words_list
-
-
-def print_most_frequent_words(frequent_words, print_length):
+def print_most_frequent_words(frequent_words):
     print('Most frequent words in descending order:')
-    words_for_print = ', '.join(frequent_words[:print_length])
+    words_for_print = ', '.join(frequent_words)
     print(words_for_print + '.')
 
 
@@ -53,6 +39,6 @@ if __name__ == '__main__':
         file_text = load_data(user_file_path)
     except FileNotFoundError:
         exit('Can not find the text file.')
-    all_words = get_all_words_frequency(file_text)
-    sorted_words = get_words_sorted_by_frequency(all_words)
-    print_most_frequent_words(sorted_words, WORDS_FOR_PRINT_NUMBER)
+    frequent_words_amount = get_most_frequent_words(file_text, WORDS_FOR_PRINT_NUMBER)
+    frequent_words, words_amount = zip(*frequent_words_amount)
+    print_most_frequent_words(frequent_words)
