@@ -19,27 +19,32 @@ def load_data(file_path):
     return file_content
 
 
-def get_most_frequent_words(text, print_length):
-    lower_text = text.lower()
-    words_list = re.findall(r'\b\w+\b', lower_text)
-    frequent_words_with_amount = Counter(words_list).most_common(print_length)
+def get_most_frequent_words(text, words_count):
+    lowered_text = text.lower()
+    words_list = re.findall(r'\b\w+\b', lowered_text)
+    frequent_words_with_amount = Counter(words_list).most_common(words_count)
     return frequent_words_with_amount
 
 
 def print_most_frequent_words(words):
-    print('Most frequent words in descending order:')
     words_for_print = ', '.join(words)
-    print(words_for_print + '.')
+    print(
+        'Most frequent words in descending order:\n'
+        '{}.'.format(words_for_print)
+    )
 
 
 if __name__ == '__main__':
-    WORDS_FOR_PRINT_NUMBER = 10
+    number_of_words_for_print = 10
     console_arguments = get_console_arguments()
     user_file_path = console_arguments.file_path
     try:
         file_text = load_data(user_file_path)
     except FileNotFoundError:
         exit('Can not find the text file.')
-    frequent_words_amount = get_most_frequent_words(file_text, WORDS_FOR_PRINT_NUMBER)
+    frequent_words_amount = get_most_frequent_words(
+        file_text,
+        number_of_words_for_print
+    )
     frequent_words, words_amount = zip(*frequent_words_amount)
     print_most_frequent_words(frequent_words)
