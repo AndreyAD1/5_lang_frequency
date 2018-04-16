@@ -2,6 +2,7 @@ import argparse
 import re
 from collections import Counter
 
+
 def get_console_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -25,9 +26,9 @@ def get_most_frequent_words(text, print_length):
     return frequent_words_with_amount
 
 
-def print_most_frequent_words(frequent_words):
+def print_most_frequent_words(words):
     print('Most frequent words in descending order:')
-    words_for_print = ', '.join(frequent_words)
+    words_for_print = ', '.join(words)
     print(words_for_print + '.')
 
 
